@@ -1,51 +1,43 @@
-import { Storage } from "../core/storage.js";
-import { Utils } from "../core/utils.js";
+// js/systems/eggs.js
+import { CurrencySystem } from "./currency.js";
 
-export class EggsSystem {
+export class EggSystem {
   constructor() {
-    this.eggs = Storage.load("crackedEggs", []);
-    this.eggValues = {
-      common: 50_000_000,
-      rare: 120_000_000,
-      epic: 250_000_000,
-      ultimate: 500_000_000,
-      special: 1_000_000_000,
-      blessing: 1_500_000_000,
-      event: 2_000_000_000,
-    };
+    this.eggs = []; // lista de eggs adicionados
   }
 
-  adicionarEgg(tipo, quantidade = 1) {
-    const existente = this.eggs.find(e => e.tipo === tipo);
-    if (existente) existente.quantidade += quantidade;
-    else this.eggs.push({ tipo, quantidade });
-    Storage.save("crackedEggs", this.eggs);
+  /**
+   * Adiciona egg
+   */
+  addEgg(tipoBits, quantidade) {
+    const egg = { tipoBits: Number(tipoBits), quantidade: Number(quantidade) };
+    this.eggs.push(egg);
+    return egg;
   }
 
-  removerEgg(tipo, quantidade = 1) {
-    const existente = this.eggs.find(e => e.tipo === tipo);
-    if (existente) {
-      existente.quantidade -= quantidade;
-      if (existente.quantidade <= 0) {
-        this.eggs = this.eggs.filter(e => e.tipo !== tipo);
-      }
-      Storage.save("crackedEggs", this.eggs);
-    }
+  /**
+   * Calcula total em Bits/Mega/Tera
+   */
+  calcularTotais() {
+    const totalBits = this.eggs.reduce((acc, e) => acc + e.tipoBits * e.quantidade, 0);
+    return CurrencySystem.fromBits(totalBits);
   }
 
-  calcularTotal() {
-    let totalBits = 0;
-    this.eggs.forEach(e => {
-      const valor = this.eggValues[e.tipo] || 0;
-      totalBits += valor * e.quantidade;
-    });
-    return {
-      bits: totalBits,
-      formatado: Utils.formatCurrency(totalBits)
-    };
+  /**
+   * Formata total para string
+   */
+  formatTotais() {
+    const { tera, mega, bits } = this.calcularTotais();
+    return `${tera}T ${mega}M ${bits}Bits`;
   }
 
-  listar() {
-    return this.eggs;
+  /**
+   * Copia total para inputs "Depois"
+   */
+  copiarParaDepois() {
+    const { tera, mega, bits } = this.calcularTotais();
+    document.getElementById("depoisTera").value = tera;
+    document.getElementById("depoisMega").value = mega;
+    document.getElementById("depoisBits").value = bits;
   }
 }

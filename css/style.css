@@ -1,62 +1,208 @@
-:root {
-    --bg-dark: #0b0e13;
-    --bg-card: #141922;
-    --accent: #00bcd4;
-    --accent-hover: #0097a7;
-    --text-primary: #fff;
-    --text-secondary: #b0bec5;
-    --radius: 16px;
-    --transition: 0.3s ease;
-  }
-  
-  body {
-    font-family: "Poppins", sans-serif;
-    background-color: var(--bg-dark);
-    color: var(--text-primary);
-    transition: background var(--transition), color var(--transition);
-    overflow-x: hidden;
-  }
-  
-  .custom-navbar, .sidebar {
-    background: rgba(20, 25, 34, 0.95);
-    backdrop-filter: blur(8px);
-    border-bottom: 1px solid rgba(255, 255, 255, 0.05);
-  }
-  
-  .card {
-    background: var(--bg-card);
-    border-radius: var(--radius);
-    box-shadow: 0 2px 10px rgba(0,0,0,0.3);
-    transition: transform 0.25s ease, box-shadow 0.25s ease;
-  }
-  
-  .card:hover {
-    transform: translateY(-4px);
-    box-shadow: 0 4px 16px rgba(0,0,0,0.4);
-  }
-  
-  .btn-primary {
-    background: var(--accent);
-    border: none;
-    border-radius: 12px;
-    transition: background var(--transition);
-  }
-  
-  .btn-primary:hover {
-    background: var(--accent-hover);
-  }
-  
-  /* Responsivo */
-  @media (max-width: 768px) {
-    .sidebar { display: none; }
-    .main-content { padding: 1rem; }
-    .navbar-brand { font-size: 1rem; }
-  }
-  
-  /* Animações */
-  .fade-in { animation: fadeIn 0.8s ease both; }
-  @keyframes fadeIn {
-    from { opacity: 0; transform: translateY(10px); }
-    to { opacity: 1; transform: translateY(0); }
-  }
-  
+/* === Geral === */
+body {
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  background-color: #1a1a1a;
+  color: #f0f0f0;
+  margin: 0;
+  padding: 0;
+  transition: background 0.3s;
+}
+
+.custom-scrollbar {
+  scrollbar-width: thin;
+  scrollbar-color: #0ff #111;
+}
+
+.custom-scrollbar::-webkit-scrollbar {
+  width: 10px;
+}
+
+.custom-scrollbar::-webkit-scrollbar-track {
+  background: #111;
+}
+
+.custom-scrollbar::-webkit-scrollbar-thumb {
+  background-color: #0ff;
+  border-radius: 5px;
+}
+
+/* === Navbar === */
+.custom-navbar {
+  background-color: #121212;
+  box-shadow: 0 0 15px rgba(0,255,255,0.2);
+}
+
+.brand-logo {
+  font-weight: 700;
+  color: #0ff;
+}
+
+.nav-link {
+  color: #ccc;
+  transition: all 0.2s;
+}
+
+.nav-link:hover {
+  color: #0ff;
+  text-shadow: 0 0 8px #0ff;
+}
+
+/* === Sidebar === */
+.sidebar {
+  background-color: #111;
+  padding-top: 80px;
+  min-height: 100vh;
+  box-shadow: 2px 0 15px rgba(0,255,255,0.1);
+}
+
+.sidebar-item {
+  display: flex;
+  align-items: center;
+  padding: 12px 15px;
+  color: #aaa;
+  text-decoration: none;
+  margin-bottom: 4px;
+  border-radius: 8px;
+  transition: all 0.2s;
+}
+
+.sidebar-item i {
+  margin-right: 10px;
+}
+
+.sidebar-item:hover {
+  background-color: rgba(0,255,255,0.1);
+  color: #0ff;
+  box-shadow: 0 0 10px #0ff;
+}
+
+/* === Cards === */
+.card {
+  background-color: #1e1e1e;
+  border: none;
+  border-radius: 15px;
+  padding: 15px;
+  margin-bottom: 20px;
+  box-shadow: 0 0 15px rgba(0,255,255,0.05);
+  transition: transform 0.2s, box-shadow 0.2s;
+}
+
+.card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 0 25px rgba(0,255,255,0.2);
+}
+
+.stat-card {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 15px;
+  border-radius: 12px;
+  background: #111;
+  box-shadow: 0 0 10px rgba(0,255,255,0.1);
+}
+
+.stat-card .stat-icon {
+  font-size: 2rem;
+  color: #0ff;
+}
+
+.stat-card .stat-info h3 {
+  margin: 0;
+}
+
+.stat-card .stat-trend.up i {
+  color: #0f0;
+}
+
+.stat-card .stat-trend.down i {
+  color: #f00;
+}
+
+/* === Dashboard e Main === */
+.main-container {
+  margin-top: 70px;
+  padding: 20px;
+}
+
+.dashboard-header h1 {
+  font-size: 1.8rem;
+  color: #0ff;
+}
+
+.dashboard-header p {
+  color: #888;
+}
+
+/* === Inputs === */
+.input-group-custom {
+  margin-bottom: 20px;
+}
+
+.money-inputs {
+  display: flex;
+  gap: 10px;
+}
+
+.money-field {
+  position: relative;
+  flex: 1;
+}
+
+.money-field i {
+  position: absolute;
+  top: 50%;
+  left: 8px;
+  transform: translateY(-50%);
+  color: #0ff;
+}
+
+.money-field input {
+  padding-left: 28px;
+  background-color: #222;
+  border: 1px solid #0ff;
+  border-radius: 8px;
+  color: #fff;
+}
+
+/* === Buttons === */
+.btn-primary {
+  background-color: #0ff;
+  border: none;
+  color: #111;
+  font-weight: 600;
+  transition: all 0.2s;
+}
+
+.btn-primary:hover {
+  background-color: #00ffffcc;
+  box-shadow: 0 0 15px #0ff;
+}
+
+/* === Footer === */
+.custom-footer {
+  background-color: #121212;
+  padding: 15px 0;
+  color: #888;
+  border-top: 1px solid #0ff1;
+}
+
+/* === Tabelas e Listas === */
+.eggs-list, .tours-list, .activity-feed {
+  min-height: 80px;
+}
+
+.empty-state {
+  text-align: center;
+  color: #555;
+}
+
+.empty-state i {
+  font-size: 2rem;
+  color: #0ff;
+}
+
+/* === Responsivo === */
+@media(max-width: 992px){
+  .sidebar { display: none; }
+}

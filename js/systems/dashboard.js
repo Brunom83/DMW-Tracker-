@@ -1,27 +1,19 @@
-import { CurrencySystem } from "./currency.js";
-import { EggsSystem } from "./eggs.js";
-import { ToursSystem } from "./tours.js";
-import { Utils } from "../core/utils.js";
-
+// js/systems/dashboard.js
 export class Dashboard {
-  constructor() {
-    this.moedas = new CurrencySystem();
-    this.ovos = new EggsSystem();
-    this.tours = new ToursSystem();
+  constructor(currencySystem) {
+    this.currencySystem = currencySystem;
   }
 
-  atualizar() {
-    const ganhosHoje = this.moedas.listar().filter(sessao => {
-      const hoje = new Date().toISOString().split("T")[0];
-      return sessao.data.startsWith(hoje);
-    });
+  /**
+   * Atualiza os cards do dashboard
+   */
+  atualizarCards() {
+    const sessoes = this.currencySystem.sessoes;
+    const totalBits = sessoes.reduce((acc, s) => acc + s.ganhoBits, 0);
 
-    const totalHoje = ganhosHoje.reduce((acc, s) => acc + s.ganhoBits, 0);
-    const eggsTotal = this.ovos.calcularTotal();
-    const toursTotal = this.tours.calcularTotal();
-
-    document.getElementById("dashMoedas").innerText = Utils.formatCurrency(totalHoje);
-    document.getElementById("dashEggs").innerText = eggsTotal.formatado;
-    document.getElementById("dashTours").innerText = toursTotal.formatado;
+    document.getElementById("dashboardTera").innerText = `${Math.floor(totalBits/1_000_000)}T`;
+    document.getElementById("dashboardSessoes").innerText = sessoes.length;
+    document.getElementById("sidebarTera").innerText = `${Math.floor(totalBits/1_000_000)}T`;
+    document.getElementById("sidebarSessoes").innerText = sessoes.length;
   }
 }
