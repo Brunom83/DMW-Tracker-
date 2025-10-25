@@ -1,0 +1,62 @@
+:root {
+    --bg-dark: #0b0e13;
+    --bg-card: #141922;
+    --accent: #00bcd4;
+    --accent-hover: #0097a7;
+    --text-primary: #fff;
+    --text-secondary: #b0bec5;
+    --radius: 16px;
+    --transition: 0.3s ease;
+  }
+  
+  body {
+    font-family: "Poppins", sans-serif;
+    background-color: var(--bg-dark);
+    color: var(--text-primary);
+    transition: background var(--transition), color var(--transition);
+    overflow-x: hidden;
+  }
+  
+  .custom-navbar, .sidebar {
+    background: rgba(20, 25, 34, 0.95);
+    backdrop-filter: blur(8px);
+    border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+  }
+  
+  .card {
+    background: var(--bg-card);
+    border-radius: var(--radius);
+    box-shadow: 0 2px 10px rgba(0,0,0,0.3);
+    transition: transform 0.25s ease, box-shadow 0.25s ease;
+  }
+  
+  .card:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 4px 16px rgba(0,0,0,0.4);
+  }
+  
+  .btn-primary {
+    background: var(--accent);
+    border: none;
+    border-radius: 12px;
+    transition: background var(--transition);
+  }
+  
+  .btn-primary:hover {
+    background: var(--accent-hover);
+  }
+  
+  /* Responsivo */
+  @media (max-width: 768px) {
+    .sidebar { display: none; }
+    .main-content { padding: 1rem; }
+    .navbar-brand { font-size: 1rem; }
+  }
+  
+  /* Animações */
+  .fade-in { animation: fadeIn 0.8s ease both; }
+  @keyframes fadeIn {
+    from { opacity: 0; transform: translateY(10px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+  
