@@ -1,49 +1,96 @@
 // js/app.js
-import { CurrencySystem } from "./systems/currency.js";
-import { EggSystem } from "./systems/eggs.js";
-import { Dashboard } from "./systems/dashboard.js";
-import { TourSystem } from "./systems/tours.js";
+import { Moedas } from './moedas.js';
+import { Eggs } from './eggs.js';
+import { ToursManager } from './tours.js';
 
-document.addEventListener("DOMContentLoaded", () => {
-  const moedas = new CurrencySystem();
-  const eggs = new EggSystem();
-  const dashboard = new Dashboard(moedas);
-  const tours = new TourSystem();
+class DMWTracker {
+    constructor() {
+        this.eggs = [];
+        this.tours = window.toursManager; // link para ToursManager
+        this.inicializar();
+    }
 
-  // botão calcular moedas
-  document.getElementById("calcularBtn").addEventListener("click", () => {
-    const antes = {
-      tera: parseFloat(document.getElementById("antesTera").value) || 0,
-      mega: parseFloat(document.getElementById("antesMega").value) || 0,
-      bits: parseFloat(document.getElementById("antesBits").value) || 0,
-    };
-    const depois = {
-      tera: parseFloat(document.getElementById("depoisTera").value) || 0,
-      mega: parseFloat(document.getElementById("depoisMega").value) || 0,
-      bits: parseFloat(document.getElementById("depoisBits").value) || 0,
-    };
+    atualizarDashboard() {
+        this.atualizarGanhosMoedasDashboard();
+        this.atualizarEggsDashboard();
+        this.atualizarProximosToursDashboard();
+        this.atualizarHistoricoToursDashboard();
+    }
+    
+    // Moedas
+    atualizarGanhosMoedasDashboard() {
+        document.getElementById('resultadoAntesDash').textContent = document.getElementById('resultadoAntes').textContent;
+        document.getElementById('resultadoDepoisDash').textContent = document.getElementById('resultadoDepois').textContent;
+        document.getElementById('resultadoGanhosDash').textContent = document.getElementById('resultadoGanhos').textContent;
+    }
+    
+    // Eggs
+    atualizarEggsDashboard() {
+        document.getElementById('totalBitsEggsDash').textContent = document.getElementById('totalBitsEggs').textContent;
+        document.getElementById('totalMegaEggsDash').textContent = document.getElementById('totalMegaEggs').textContent;
+        document.getElementById('totalTeraEggsDash').textContent = document.getElementById('totalTeraEggs').textContent;
+    }
+    
+    // Próximos Tours
+    atualizarProximosToursDashboard() {
+        const container = document.getElementById('proximosToursDashboard');
+        container.innerHTML = document.getElementById('proximosTours').innerHTML;
+    }
+    
+    // Histórico resumido
+    atualizarHistoricoToursDashboard() {
+        const container = document.getElementById('historicoToursDashboard');
+        container.innerHTML = document.getElementById('historicoTours').innerHTML;
+    }
+    
 
-    const sessao = moedas.registrarSessao(antes, depois);
-    document.getElementById("resultadoGanhos").innerText = `+${CurrencySystem.formatCurrency(sessao.ganhoBits)}`;
-    dashboard.atualizarCards();
-    console.log("Sessão salva:", sessao);
-  });
+    inicializar() {
+        this.carregarDados();
+        this.inicializarEventos();
+        this.atualizarCalculadoraEggs();
+        this.atualizarDashboard();
+        setInterval(() => this.atualizarDashboard(), 60000);
+    }
 
-  // botão adicionar egg
-  document.getElementById("adicionarEgg").addEventListener("click", () => {
-    const tipo = document.getElementById("tipoEgg").value;
-    const quantidade = document.getElementById("quantidadeEgg").value;
-    eggs.addEgg(tipo, quantidade);
-    const totais = eggs.calcularTotais();
-    document.getElementById("totalBitsEggs").innerText = totais.bits;
-    document.getElementById("totalMegaEggs").innerText = totais.mega;
-    document.getElementById("totalTeraEggs").innerText = totais.tera;
-  });
+    inicializarEventos() {
+        // Botões de moedas e eggs
+        this.addEventListener('calcularBtn','click',()=>this.calcularGanhos());
+        this.addEventListener('adicionarEgg','click',()=>this.adicionarEgg());
+        this.addEventListener('quantidadeEgg','keypress',(e)=>{ if(e.key==='Enter') this.adicionarEgg(); });
+        this.addEventListener('copiarParaDepois','click',()=>this.copiarParaDepois());
+        this.addEventListener('adicionarHorarioBtn','click',() => {
+            const tipo = document.getElementById('tipoTour').value;
+            const horario = document.getElementById('horarioTour').value;
+            this.tours.adicionarHorario(tipo, horario);
+        });
+        
+        this.addEventListener('registrarTourBtn','click',() => {
+            const tipo = document.getElementById('tipoTourRegistrar').value;
+            const tera = parseFloat(document.getElementById('teraGanho').value) || 0;
+            const detalhes = document.getElementById('detalhesTour').value;
+            const seals = parseInt(document.getElementById('sealsTour').value) || 0;
+            this.tours.registrarTour(tipo, tera, detalhes, seals);
+        });
+    }
 
-  // copiar para depois
-  document.getElementById("copiarParaDepois").addEventListener("click", () => {
-    eggs.copiarParaDepois();
-  });
+    addEventListener(id, evento, callback) {
+        const el = document.getElementById(id);
+        if(el) el.addEventListener(evento, callback);
+    }    
 
-  console.log("DMW Tracker modular carregado 🚀");
+    atualizarDashboard() {
+        this.atualizarResumoDia();
+        this.tours.atualizarProximosTours(); // mostra próximos tours no dashboard
+    }
+}
+
+document.addEventListener('DOMContentLoaded', function() {
+    window.dmwTracker = new DMWTracker();
 });
+
+window.switchToTab = function(tabName) {
+    document.querySelectorAll('.tab-content').forEach(tab => tab.classList.add('d-none'));
+    const tab = document.getElementById(tabName);
+    if(tab) tab.classList.remove('d-none');
+};
+

@@ -1,208 +1,215 @@
 <!DOCTYPE html>
-<html lang="pt" data-bs-theme="dark">
+<html lang="pt-PT">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>DMW Farm Tracker</title>
-    <!-- Bootstrap & Font Awesome -->
+    <title>DMW Farm Tracker v1.2</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
-    <!-- Custom CSS -->
-    <link href="css/style.css" rel="stylesheet">
-    <link href="css/animations.css" rel="stylesheet">
+    <link rel="stylesheet" href="css/style.css">
 </head>
-<body class="custom-scrollbar">
+<body class="bg-dark text-light">
 
-<!-- Loading Screen -->
-<div id="loadingScreen" class="loading-screen">
-    <div class="loading-content">
-        <div class="digimon-loader">
-            <div class="digi-egg"></div>
-            <div class="loading-text">Carregando DMW Tracker...</div>
+    <!-- Navbar -->
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+        <div class="container-fluid">
+            <a class="navbar-brand" href="#">DMW Tracker v1.2</a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarTabs" aria-controls="navbarTabs" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarTabs">
+                <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                    <li class="nav-item">
+                        <a class="nav-link" id="dashboard-tab" href="#" onclick="switchToTab('dashboard')">Dashboard</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" id="moedas-tab" href="#" onclick="switchToTab('moedas')">Moedas</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" id="eggs-tab" href="#" onclick="switchToTab('eggs')">Eggs</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" id="tours-tab" href="#" onclick="switchToTab('tours')">Tours</a>
+                    </li>
+                </ul>
+            </div>
         </div>
-    </div>
-</div>
+    </nav>
 
-<!-- Navbar -->
-<nav class="navbar navbar-expand-lg navbar-dark custom-navbar fixed-top">
-    <div class="container">
-        <a class="navbar-brand brand-logo" href="#">
-            <i class="fas fa-dragon me-2"></i> DMW Farm Tracker <span class="version-badge">v2.0</span>
-        </a>
-        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
-            <span class="navbar-toggler-icon"></span>
-        </button>
-        <div class="collapse navbar-collapse" id="navbarNav">
-            <ul class="navbar-nav ms-auto">
-                <li class="nav-item">
-                    <a class="nav-link glow-hover" href="#" onclick="switchToTab('dashboard')">
-                        <i class="fas fa-chart-line me-1"></i>Dashboard
-                    </a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link glow-hover" href="#" onclick="switchToTab('moedas')">
-                        <i class="fas fa-coins me-1"></i>Moedas
-                    </a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link glow-hover" href="#" onclick="switchToTab('tours')">
-                        <i class="fas fa-route me-1"></i>Tours
-                    </a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link glow-hover" href="#" onclick="switchToTab('dungeons')">
-                        <i class="fas fa-dungeon me-1"></i>Dungeons
-                    </a>
-                </li>
-            </ul>
-        </div>
-    </div>
-</nav>
+    <!-- Conteúdos das Tabs -->
+    <div class="container mt-4">
+        <!-- Dashboard -->
+<div id="dashboard" class="tab-content">
+    <h3>📊 Dashboard</h3>
 
-<div class="container-fluid main-container">
-    <div class="row">
-        <!-- Sidebar Desktop -->
-        <div class="col-lg-2 d-none d-lg-block sidebar">
-            <div class="sidebar-sticky">
-                <div class="sidebar-header">
-                    <h5>Navegação Rápida</h5>
-                </div>
-                <div class="sidebar-menu">
-                    <a href="#" class="sidebar-item glow-hover" onclick="switchToTab('dashboard')">
-                        <i class="fas fa-chart-line"></i> Dashboard
-                    </a>
-                    <a href="#" class="sidebar-item glow-hover" onclick="switchToTab('moedas')">
-                        <i class="fas fa-coins"></i> Controlo Moedas
-                    </a>
-                    <a href="#" class="sidebar-item glow-hover" onclick="switchToTab('tours')">
-                        <i class="fas fa-route"></i> Sistema Tours
-                    </a>
-                    <a href="#" class="sidebar-item glow-hover" onclick="switchToTab('dungeons')">
-                        <i class="fas fa-dungeon"></i> Dungeons
-                    </a>
+    <div class="row g-3">
+        <!-- Ganhos de Moedas -->
+        <div class="col-md-4">
+            <div class="card bg-secondary text-light">
+                <div class="card-body">
+                    <h5 class="card-title">💰 Ganhos de Moedas</h5>
+                    <p>Antes: <span id="resultadoAntesDash">0T 0M 0Bits</span></p>
+                    <p>Depois: <span id="resultadoDepoisDash">0T 0M 0Bits</span></p>
+                    <p>Ganhos: <span id="resultadoGanhosDash">0T 0M 0Bits</span></p>
                 </div>
             </div>
         </div>
 
-        <!-- Main Content -->
-        <div class="col-12 col-lg-10 main-content">
-            <div class="tab-content" id="mainTabsContent">
-
-                <!-- Dashboard -->
-                <div class="tab-pane fade show active" id="dashboard" role="tabpanel">
-                    <div class="dashboard-header">
-                        <h1>📊 Dashboard</h1>
-                        <p class="text-muted">Visão geral do teu progresso no DMW</p>
-                    </div>
-                    <div class="row g-3">
-                        <!-- Stats Cards -->
-                        <div class="col-xl-3 col-md-6">
-                            <div class="stat-card income-card animated-card">
-                                <div class="stat-icon"><i class="fas fa-coins"></i></div>
-                                <div class="stat-info">
-                                    <h3 id="dashboardTera">0T</h3>
-                                    <span>Ganho Total Hoje</span>
-                                </div>
-                                <div class="stat-trend up"><i class="fas fa-arrow-up"></i></div>
-                            </div>
-                        </div>
-                        <div class="col-xl-3 col-md-6">
-                            <div class="stat-card sessions-card animated-card">
-                                <div class="stat-icon"><i class="fas fa-play-circle"></i></div>
-                                <div class="stat-info">
-                                    <h3 id="dashboardSessoes">0</h3>
-                                    <span>Sessões Hoje</span>
-                                </div>
-                                <div class="stat-trend up"><i class="fas fa-arrow-up"></i></div>
-                            </div>
-                        </div>
-                        <div class="col-xl-3 col-md-6">
-                            <div class="stat-card tours-card animated-card">
-                                <div class="stat-icon"><i class="fas fa-route"></i></div>
-                                <div class="stat-info">
-                                    <h3 id="dashboardTours">0</h3>
-                                    <span>Tours Realizados</span>
-                                </div>
-                                <div class="stat-trend up"><i class="fas fa-arrow-up"></i></div>
-                            </div>
-                        </div>
-                        <div class="col-xl-3 col-md-6">
-                            <div class="stat-card efficiency-card animated-card">
-                                <div class="stat-icon"><i class="fas fa-tachometer-alt"></i></div>
-                                <div class="stat-info">
-                                    <h3 id="dashboardEficiencia">0%</h3>
-                                    <span>Eficiência</span>
-                                </div>
-                                <div class="stat-trend up"><i class="fas fa-arrow-up"></i></div>
-                            </div>
-                        </div>
-                        <!-- Próximos Tours -->
-                        <div class="col-xl-8">
-                            <div class="card animated-card">
-                                <div class="card-header"><h5><i class="fas fa-clock me-2"></i>Próximos Tours</h5></div>
-                                <div class="card-body" id="proximosToursDashboard">
-                                    <div class="empty-state"><i class="fas fa-route"></i><p>Configure os horários na aba Tours</p></div>
-                                </div>
-                            </div>
-                        </div>
-                        <!-- Quick Actions -->
-                        <div class="col-xl-4">
-                            <div class="card animated-card">
-                                <div class="card-header"><h5><i class="fas fa-bolt me-2"></i>Ações Rápidas</h5></div>
-                                <div class="card-body text-center">
-                                    <button class="quick-action-btn" onclick="switchToTab('moedas')"><i class="fas fa-plus-circle"></i> Nova Sessão</button>
-                                    <button class="quick-action-btn" onclick="switchToTab('tours')"><i class="fas fa-route"></i> Registrar Tour</button>
-                                    <button class="quick-action-btn" onclick="dmwTracker.limparDadosDia()"><i class="fas fa-broom"></i> Limpar Dia</button>
-                                    <button class="quick-action-btn" onclick="dmwTracker.exportarDados()"><i class="fas fa-download"></i> Exportar</button>
-                                </div>
-                            </div>
-                        </div>
-                        <!-- Recent Activity -->
-                        <div class="col-12">
-                            <div class="card animated-card">
-                                <div class="card-header"><h5><i class="fas fa-history me-2"></i>Actividade Recente</h5></div>
-                                <div class="card-body" id="dashboardAtividade">
-                                    <div class="empty-state"><i class="fas fa-info-circle"></i><p>Ainda não há actividade hoje</p></div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
+        <!-- Eggs -->
+        <div class="col-md-4">
+            <div class="card bg-secondary text-light">
+                <div class="card-body">
+                    <h5 class="card-title">🥚 Eggs</h5>
+                    <p>Total Bits: <span id="totalBitsEggsDash">0</span></p>
+                    <p>Total Mega: <span id="totalMegaEggsDash">0</span></p>
+                    <p>Total Tera: <span id="totalTeraEggsDash">0</span></p>
                 </div>
+            </div>
+        </div>
 
-                <!-- Moedas -->
-                <div class="tab-pane fade" id="moedas" role="tabpanel">
-                    <div class="dashboard-header"><h1>💰 Controlo de Moedas</h1><p class="text-muted">Regista os teus ganhos e perdas</p></div>
-                    <div id="moedasContent"></div>
+        <!-- Próximos Tours -->
+        <div class="col-md-4">
+            <div class="card bg-secondary text-light">
+                <div class="card-body">
+                    <h5 class="card-title">🏹 Próximos Tours</h5>
+                    <div id="proximosToursDashboard"></div>
                 </div>
+            </div>
+        </div>
+    </div>
 
-                <!-- Tours -->
-                <div class="tab-pane fade" id="tours" role="tabpanel">
-                    <div class="dashboard-header"><h1>🏹 Sistema de Tours</h1><p class="text-muted">Gerir horários e registar tours realizados</p></div>
-                    <div id="toursContent"></div>
+    <!-- Histórico resumido -->
+    <div class="row mt-3">
+        <div class="col-12">
+            <div class="card bg-secondary text-light">
+                <div class="card-body">
+                    <h5 class="card-title">🕒 Histórico de Tours</h5>
+                    <div id="historicoToursDashboard"></div>
                 </div>
-
-                <!-- Dungeons -->
-                <div class="tab-pane fade" id="dungeons" role="tabpanel">
-                    <div class="dashboard-header"><h1>🏰 Dungeons</h1><p class="text-muted">Sistema de tracking de dungeons - Em breve!</p></div>
-                </div>
-
             </div>
         </div>
     </div>
 </div>
 
-<!-- Footer -->
-<footer class="custom-footer">
-    <div class="container">
-        <div class="row align-items-center">
-            <div class="col-md-6">&copy; 2024 DMW Farm Tracker. Feito com ❤️ para a comunidade DMW.</div>
-            <div class="col-md-6 text-md-end"><span id="onlineStatus" class="badge bg-success"><i class="fas fa-circle me-1"></i>Online</span></div>
+        <!-- Moedas -->
+        <div id="moedas" class="tab-content d-none">
+            <h3>💰 Sistema de Moedas</h3>
+            <div class="row">
+                <div class="col-md-6 mb-3">
+                    <label for="antesTera" class="form-label">Antes (Tera/Mega/Bits)</label>
+                    <input type="number" id="antesTera" class="form-control mb-1" placeholder="Tera">
+                    <input type="number" id="antesMega" class="form-control mb-1" placeholder="Mega">
+                    <input type="number" id="antesBits" class="form-control" placeholder="Bits">
+                </div>
+                <div class="col-md-6 mb-3">
+                    <label for="depoisTera" class="form-label">Depois (Tera/Mega/Bits)</label>
+                    <input type="number" id="depoisTera" class="form-control mb-1" placeholder="Tera">
+                    <input type="number" id="depoisMega" class="form-control mb-1" placeholder="Mega">
+                    <input type="number" id="depoisBits" class="form-control" placeholder="Bits">
+                </div>
+            </div>
+            <button id="calcularBtn" class="btn btn-primary mb-3">Calcular Ganhos</button>
+            <div>
+                <p id="resultadoAntes"></p>
+                <p id="resultadoDepois"></p>
+                <h5 id="resultadoGanhos"></h5>
+            </div>
+        </div>
+
+        <!-- Eggs -->
+        <div id="eggs" class="tab-content d-none">
+            <h3>🥚 Calculadora de Eggs</h3>
+            <div class="mb-3">
+                <label for="tipoEgg" class="form-label">Tipo de Egg</label>
+                <select id="tipoEgg" class="form-select">
+                    <option value="25">Class1 Cracked DigiEgg</option>
+                    <option value="100">Class2 Cracked DigiEgg</option>
+                    <option value="150">Class3 Cracked DigiEgg</option>
+                    <option value="200">Class4 Cracked DigiEgg</option>
+                    <option value="300">Class6 Cracked DigiEgg</option>
+                    <option value="450">Class7 Cracked DigiEgg</option>
+                    <option value="5000">Quest DigiEgg</option>
+                    <option value="125">Class DATA DigiEggs</option>
+                </select>
+                <input type="number" id="quantidadeEgg" class="form-control mt-1" value="0">
+                <button id="adicionarEgg" class="btn btn-success mt-2">Adicionar Egg</button>
+                <button id="copiarParaDepois" class="btn btn-secondary mt-2">Copiar para Depois</button>
+            </div>
+            <div id="listaEggs" class="mb-2"></div>
+            <div>
+                <p>Total Bits: <span id="totalBitsEggs">0</span></p>
+                <p>Total Mega: <span id="totalMegaEggs">0</span></p>
+                <p>Total Tera: <span id="totalTeraEggs">0</span></p>
+            </div>
+        </div>
+
+        <!-- Tours -->
+<div id="tours" class="tab-content d-none">
+    <h3>🏹 Sistema de Tours</h3>
+
+    <!-- Adicionar Horário -->
+    <div class="mb-3 row g-2 align-items-center">
+        <div class="col-auto">
+            <select id="tipoTour" class="form-select">
+                <option value="forest">🌲 Forest Tour</option>
+                <option value="bless">🙏 Bless Tour</option>
+            </select>
+        </div>
+        <div class="col-auto">
+            <input type="time" id="horarioTour" class="form-control">
+        </div>
+        <div class="col-auto">
+            <button id="adicionarHorarioBtn" class="btn btn-primary">Adicionar Horário</button>
         </div>
     </div>
-</footer>
 
-<!-- Scripts -->
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
-<script src="js/app.js"></script>
+    <!-- Lista de Horários -->
+    <div id="listaHorarios" class="mb-3"></div>
+
+    <hr class="border-light">
+
+    <!-- Registrar Tour -->
+    <div class="mb-3 row g-2 align-items-center">
+        <div class="col-auto">
+            <select id="tipoTourRegistrar" class="form-select">
+                <option value="forest">🌲 Forest Tour</option>
+                <option value="bless">🙏 Bless Tour</option>
+            </select>
+        </div>
+        <div class="col-auto">
+            <input type="number" id="teraGanho" class="form-control" placeholder="Tera ganho">
+        </div>
+        <div class="col-auto">
+            <input type="text" id="detalhesTour" class="form-control" placeholder="Detalhes (opcional)">
+        </div>
+        <div class="col-auto">
+            <input type="number" id="sealsTour" class="form-control" placeholder="Seals">
+        </div>
+        <div class="col-auto">
+            <button id="registrarTourBtn" class="btn btn-success">Registrar Tour</button>
+        </div>
+    </div>
+
+    <!-- Próximos Tours -->
+    <div class="mb-3">
+        <h6>Próximos Tours:</h6>
+        <div id="proximosTours" class="mb-2"></div>
+    </div>
+
+    <!-- Histórico de Tours -->
+    <div class="mb-3">
+        <h6>Histórico de Tours:</h6>
+        <div id="historicoTours"></div>
+    </div>
+</div>
+
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script type="module" src="js/app.js"></script>
+    <script>
+        // Definir dashboard como aba inicial
+        document.addEventListener("DOMContentLoaded", () => {
+            switchToTab('dashboard');
+        });
+    </script>
 </body>
 </html>
